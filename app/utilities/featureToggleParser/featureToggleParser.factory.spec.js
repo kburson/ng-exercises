@@ -34,7 +34,7 @@ describe('featureToggleParser', function () {
   
       var result, newConfig;
   
-      it("should return false for enableDates when the parseConfigObject is called with enableDates as ['false', 'off', '0', 'no']", function() {
+      it("should return false for enableDates when the parseConfigObject is called with enableDates as `no`", function() {
   
           newConfig = {
               "enableDates": 'no'
@@ -58,7 +58,7 @@ describe('featureToggleParser', function () {
   
       });
   
-      it("should return true for enableDates when the parseConfigObject is called with enableDates as ['true', 'on', '1', 'yes']", function() {
+      it("should return true for enableDates when the parseConfigObject is called with enableDates as `1`", function() {
   
           newConfig = {
               "enableDates": 1
