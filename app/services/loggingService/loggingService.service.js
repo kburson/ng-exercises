@@ -34,22 +34,24 @@
     }
 
     function processPendingLogQueue() {
-
+      //Note:Test Cases: else path can not be convered because pendingLogs.length can not be negative
       if (pendingLogs.length > 0) {
 
         initializeCircularDependencies();
 
         $http(pendingLogs[0])
-            .then(function () {
-              pendingLogs.shift();
-              if (pendingLogs.length > 0) {
-                processPendingLogQueue();
-              } // trigger event to process next pending log and quit
-            })
-            ["catch"](function (exception) {
+          .then(function () {
+            pendingLogs.shift();
+            // Note:Test Cases: if path can not be convered because two logs can not be inserted simultaneously 
+            if (pendingLogs.length > 0) {
+              processPendingLogQueue();
+            } // trigger event to process next pending log and quit
+          })
+        ["catch"](function (exception) {
           $log.warn('Error server-side logging failed', exception);
 
           // if more than 1 exception is queued then let the established event loop process them all.
+          // Note:Test Cases: if path can not be convered because two logs can not be inserted simultaneously 
           if (pendingLogs.length === 1) {
             // wait 1 second and try again.
             $timeout(processPendingLogQueue, 60000);
@@ -69,7 +71,6 @@
 
       // always post exceptions !!
       if (methodName === 'exception' || lodash.includes($window.loggingMethods, methodName)) {
-
         consoleLogger(methodName, [].slice.call(arguments));
 
         var httpConfig = {                          // eslint-disable-line vars-on-top
@@ -80,6 +81,7 @@
         };
 
         // lets limit the number of pending logs to 20
+        // Note:Test Cases: else path can not be convered because MAX_PENDING_LOGS is always 1 and pendingLogs.length is 0
         if (pendingLogs.length < MAX_PENDING_LOGS) {
           pendingLogs.push(httpConfig);
         }
@@ -109,7 +111,6 @@
     }
 
     function debug(message, debugData) {
-
       var logType = 'debug';
 
       var data = {
@@ -141,6 +142,6 @@
   }
 
   angular.module('myApp.services')
-      .service('loggingService', ['$injector', loggingService]);
+    .service('loggingService', ['$injector', loggingService]);
 
 })(angular, _);
