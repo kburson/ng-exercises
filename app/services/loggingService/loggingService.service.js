@@ -5,7 +5,7 @@
 
     var service = this; // eslint-disable-line consistent-this
 
-    var MAX_PENDING_LOGS = 1;
+    var MAX_PENDING_LOGS = 20;
 
     var pendingLogs = [];
 
