@@ -34,7 +34,7 @@
     }
 
     function processPendingLogQueue() {
-
+      //this condition will never occur.
       if (pendingLogs.length > 0) {
 
         initializeCircularDependencies();
